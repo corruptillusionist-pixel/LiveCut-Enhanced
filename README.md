@@ -1,5 +1,7 @@
 # LiveCut Enhanced
 
+**Free download (Windows, VST3):** [daddasounds.com](https://daddasounds.com/products/livecut-enhanced.html)
+
 A modern 64-bit Windows build of **Livecut**, Remy Muller's (mdsp) classic
 beat-slicer from 2004, based on the BBCut algorithm (Nick Collins). This project
 combines the original DSP core with a new GUI built in JUCE 8.
