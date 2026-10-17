@@ -7,13 +7,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(vendor/JUCE)
 
+set(LIVECUT_FORMATS VST3 Standalone)
+if(APPLE)
+    list(APPEND LIVECUT_FORMATS AU)
+endif()
+
 juce_add_plugin(LiveCutVariant
     PRODUCT_NAME "LiveCut Enhanced"
     COMPANY_NAME "LiveCut Community"
     BUNDLE_ID com.livecutcommunity.livecut
     PLUGIN_MANUFACTURER_CODE LcCo
     PLUGIN_CODE Lcv1
-    FORMATS VST3 Standalone
+    FORMATS ${LIVECUT_FORMATS}
+    AU_MAIN_TYPE kAudioUnitType_Effect
     VST3_CATEGORIES Fx
     IS_SYNTH FALSE
     NEEDS_MIDI_INPUT FALSE
