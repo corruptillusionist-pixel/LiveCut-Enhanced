@@ -16,6 +16,14 @@ if [ ! -d vendor/JUCE ]; then
   git clone --depth 1 --branch 8.0.10 https://github.com/juce-framework/JUCE.git vendor/JUCE
 fi
 
+# JUCE 8.0.10's CoreAudio code fails to compile with newer Apple libc++
+# (StrideIterator lacks iterator typedefs). Apply the local fix if not already applied.
+PATCH="$PWD/patches/juce-8.0.10-coreaudio-stride-iterator.patch"
+if git -C vendor/JUCE apply --check "$PATCH" >/dev/null 2>&1; then
+  git -C vendor/JUCE apply "$PATCH"
+  echo "Applied JUCE CoreAudio patch."
+fi
+
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64
 cmake --build build --config Release -j"$(sysctl -n hw.ncpu)"
 

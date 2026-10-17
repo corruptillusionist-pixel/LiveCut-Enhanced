@@ -1,0 +1,33 @@
+diff --git a/modules/juce_audio_devices/native/juce_CoreAudio_mac.cpp b/modules/juce_audio_devices/native/juce_CoreAudio_mac.cpp
+index cb28286..6cace85 100644
+--- a/modules/juce_audio_devices/native/juce_CoreAudio_mac.cpp
++++ b/modules/juce_audio_devices/native/juce_CoreAudio_mac.cpp
+@@ -1122,7 +1122,13 @@ private:
+             if (src.stride == 0) // if this is zero, info is invalid
+                 continue;
+ 
+-            std::copy (src, src + (ptrdiff_t) numSamplesInChunk, inStream->tempBuffers[(size_t) index]);
++            {
++                auto* out = inStream->tempBuffers[(size_t) index];
++                auto in = src;
++
++                for (size_t i = 0; i < numSamplesInChunk; ++i, ++in)
++                    out[i] = *in;
++            }
+         }
+ 
+         // only pass a timestamp for the first chunk of each buffer
+@@ -1159,7 +1165,12 @@ private:
+                 continue;
+ 
+             const auto* src = outStream->tempBuffers[(size_t) index];
+-            std::copy (src, src + numSamplesInChunk, dest);
++            {
++                auto out = dest;
++
++                for (size_t i = 0; i < numSamplesInChunk; ++i, ++out)
++                    *out = src[i];
++            }
+         }
+     }
+ 
